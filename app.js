@@ -142,7 +142,7 @@
 
   host = ((ref3 = Settings.internal) != null ? (ref4 = ref3.trackchanges) != null ? ref4.host : void 0 : void 0) || "localhost";
 
-  if (!module.parent) {
+  // if (!module.parent) {
     app.listen(port, host, function (error) {
       if (error != null) {
         return logger.error({
@@ -152,39 +152,39 @@
         return logger.info("trackchanges starting up, listening on " + host + ":" + port);
       }
     });
-  }
+  // }
 
   // module.exports = app;
 
   exports.main = test
 
   function test(params = {}) {
-    const runmiddlewareFlag = false;
-    const url = params.__ow_path || '/project/5ec7b4125cfe83006755763e/updates';
+    const url = params.__ow_path || '/project/5ee9ea6bd9085c0007b38bfe/doc/5ee9ea6bd9085c0007b38bff/diff?from=3&to=5';
     const method = params.__ow_method || 'get';
-
+    const headers = params.__ow_headers || {
+      'X-User-Id': '5ec7b3d14857fc00a946704b'
+    };
     const { promisify } = require('util')
     const request = require("request")
     const reqPromise = promisify(request[method]);
+    let opt={}
+    opt['headers'] = headers;
+    opt['url'] = `http://localhost:3015${url}`;
+    if(params.__ow_query !== ""){
+      // opt['qs'] = params.__ow_query;
+      const qs = '?' + params.__ow_query;
+      opt['url'] = opt['url'] + qs;
+    }
+    // return {body: {params, opt}}
+    
     return (async () => {
-      let result;
-      if (runmiddlewareFlag == true) {
-        // result = await invoke(url, { method, body: params });
-      } else {
-        result = await reqPromise({
-          url: `http://localhost:3015${url}`,
-          json: params,
-          headers: headers
-        })
-      }
+      let result = await reqPromise(opt)
       var response = JSON.parse(JSON.stringify(result));
 
       delete response.request
       return response
     })();
   }
-  // unsupported types:
-  // woff2, svg, png, ico, woff, .js > 1MB
 
   if (!module.parent) {
     (async () => {
