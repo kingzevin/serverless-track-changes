@@ -11,11 +11,15 @@ module.exports =
 			host: process.env["LISTEN_ADDRESS"] or "localhost"
 	apis:
 		documentupdater:
+		# zevin
+			url : process.env['DOOCUMENT_UPDATER_URL'] or "http://#{process.env['DOCUPDATER_HOST'] or process.env['DOCUMENT_UPDATER_HOST'] or 'localhost'}:3003"
 			url: "http://#{process.env["DOCUMENT_UPDATER_HOST"] or process.env["DOCUPDATER_HOST"] or "localhost"}:3003"
 		docstore:
 			url: "http://#{process.env["DOCSTORE_HOST"] or "localhost"}:3016"
 		web:
-			url: "http://#{process.env['WEB_API_HOST'] or process.env['WEB_HOST'] or "localhost"}:#{process.env['WEB_API_PORT'] or process.env['WEB_PORT'] or 3000}"
+		# zevin
+			url: process.env['WEB_URL'] or "http://#{process.env['WEB_API_HOST'] or process.env['WEB_HOST'] or "localhost"}:#{process.env['WEB_API_PORT'] or process.env['WEB_PORT'] or 3000}"
+			# url: "http://#{process.env['WEB_API_HOST'] or process.env['WEB_HOST'] or "localhost"}:#{process.env['WEB_API_PORT'] or process.env['WEB_PORT'] or 3000}"
 			user: process.env['WEB_API_USER'] or "sharelatex"
 			pass: process.env['WEB_API_PASSWORD'] or "password"
 	redis:

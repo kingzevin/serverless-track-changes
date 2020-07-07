@@ -29,7 +29,10 @@
   process.env["SESSION_SECRET"] = 'K1pOaUSsFIoXADLUIgtIh4toKBzgoZS1vHRXNySWQc';
   process.env["SHARELATEX_SESSION_SECRET"] = 'K1pOaUSsFIoXADLUIgtIh4toKBzgoZS1vHRXNySWQc';
   process.env["SHARELATEX_CONFIG"] = __dirname + '/settings.coffee';
+  process.env['WEB_URL'] = 'https://172.17.0.1/api/v1/web/guest/sharelatex/web'
+  process.env['DOOCUMENT_UPDATER_URL'] = 'https://172.17.0.1/api/v1/web/guest/sharelatex/document-updater'
 
+  process.env['NODE_TLS_REJECT_UNAUTHORIZED']=0
 
   Metrics = require("metrics-sharelatex");
 
