@@ -29,10 +29,8 @@
   process.env["SESSION_SECRET"] = 'K1pOaUSsFIoXADLUIgtIh4toKBzgoZS1vHRXNySWQc';
   process.env["SHARELATEX_SESSION_SECRET"] = 'K1pOaUSsFIoXADLUIgtIh4toKBzgoZS1vHRXNySWQc';
   process.env["SHARELATEX_CONFIG"] = __dirname + '/settings.coffee';
-  process.env['WEB_URL'] = 'https://172.17.0.1/api/v1/web/guest/sharelatex/web'
-  process.env['DOOCUMENT_UPDATER_URL'] = 'https://172.17.0.1/api/v1/web/guest/sharelatex/document-updater'
-
-  process.env['NODE_TLS_REJECT_UNAUTHORIZED']=0
+  process.env['WEB_URL'] = 'http://172.17.0.1:10001/api/v1/web/guest/sharelatex/web'
+  process.env['DOOCUMENT_UPDATER_URL'] = 'http://172.17.0.1:10001/api/v1/web/guest/sharelatex/document-updater'
 
   Metrics = require("metrics-sharelatex");
 
@@ -162,7 +160,7 @@
   exports.main = main
   function main(params = {}){
     const url = params.__ow_path
-    const method = params.__ow_method
+    const method = params.__ow_method == 'delete' ? 'del' : params.__ow_method
     const headers = params.__ow_headers
 
     const { promisify } = require('util')
