@@ -2,36 +2,6 @@
 (function() {
   var HttpController, Metrics, Path, Settings, TrackChangesLogger, app, child_process, express, host, logger, packWorker, port, ref, ref1, ref2, ref3, ref4, truncateFn;
 
-  process.env["WEB_API_HOST"] = '172.17.0.1';
-  process.env["WEB_HOST"] = '172.17.0.1';
-  process.env["SHARELATEX_MONGO_URL"] = "mongodb://172.17.0.1/sharelatex";
-  process.env["MONGO_HOST"] = '172.17.0.1';
-  process.env["SHARELATEX_REDIS_HOST"] = '172.17.0.1';
-  process.env["REDIS_HOST"] = '172.17.0.1';
-  process.env["TAGS_HOST"] = '172.17.0.1';
-  process.env["CLSI_HOST"] = '172.17.0.1';
-  process.env["CHAT_HOST"] = '172.17.0.1';
-  process.env["DOCSTORE_HOST"] = '172.17.0.1';
-  process.env["SPELLING_HOST"] = '172.17.0.1';
-  process.env["FILESTORE_HOST"] = '172.17.0.1';
-  process.env["DOCUMENT_UPDATER_HOST"] = '172.17.0.1';
-  process.env["NOTIFICATIONS_HOST"] = '172.17.0.1';
-  process.env["CONTACTS_HOST"] = '172.17.0.1';
-  process.env["LISTEN_ADDRESS"] = '0.0.0.0';
-  process.env["REALTIME_HOST"] = '172.17.0.1';
-  process.env["TRACK_CHANGES_HOST"] = '172.17.0.1';
-  process.env["ENABLE_CONVERSIONS"] = 'true';
-  process.env["WEB_API_USER"] = 'sharelatex';
-  process.env["ENABLED_LINKED_FILE_TYPES"] = 'url;project_file';
-  process.env["SHARELATEX_APP_NAME"] = 'Overleaf Community Edition';
-  process.env["APP_NAME"] = 'Overleaf Community Edition';
-  process.env["WEB_API_PASSWORD"] = 'rAp8aFvtk77m20PG6Kedzt3iOOrWKJ3pL5eiaQsP6s';
-  process.env["SESSION_SECRET"] = 'K1pOaUSsFIoXADLUIgtIh4toKBzgoZS1vHRXNySWQc';
-  process.env["SHARELATEX_SESSION_SECRET"] = 'K1pOaUSsFIoXADLUIgtIh4toKBzgoZS1vHRXNySWQc';
-  process.env["SHARELATEX_CONFIG"] = __dirname + '/settings.coffee';
-  process.env['WEB_URL'] = 'http://172.17.0.1:10001/api/v1/web/guest/sharelatex/web'
-  process.env['DOOCUMENT_UPDATER_URL'] = 'http://172.17.0.1:10001/api/v1/web/guest/sharelatex/document-updater'
-
   Metrics = require("metrics-sharelatex");
 
   Metrics.initialize("track-changes");
@@ -143,7 +113,7 @@
 
   host = ((ref3 = Settings.internal) != null ? (ref4 = ref3.trackchanges) != null ? ref4.host : void 0 : void 0) || "localhost";
 
-  // if (!module.parent) {
+  if (!module.parent) {
     app.listen(port, host, function(error) {
       if (error != null) {
         return logger.error({
@@ -153,40 +123,10 @@
         return logger.info("trackchanges starting up, listening on " + host + ":" + port);
       }
     });
-  // }
-
-  // module.exports = app;
-
-  exports.main = main
-  function main(params = {}){
-    const url = params.__ow_path
-    const method = params.__ow_method == 'delete' ? 'del' : params.__ow_method
-    const headers = params.__ow_headers
-
-    const { promisify } = require('util')
-    const request = require("request")
-    const reqPromise = promisify(request[method]);
-    return (async () => {
-      let result;
-      let opt={}
-      opt['headers'] = headers;
-      opt['url'] = `http://${host}:${port}${url}`;
-      let str = params.__ow_body || '';
-      if(str !== "" && Buffer.from(str, 'base64').toString('base64') === str){
-        // base64
-        params.__ow_body = Buffer.from(str, 'base64').toString('ascii');
-      }
-      opt['body'] = params.__ow_body;
-      if(params.__ow_query !== ""){
-        const qs = '?' + params.__ow_query;
-        opt['url'] = opt['url'] + qs;
-      }
-      result = await reqPromise(opt);
-      var response = JSON.parse(JSON.stringify(result));
-      delete response.request
-      return response
-    })();
   }
+
+  module.exports = app; // track-changes.express.exports 
+
 }).call(this);
 
 //# sourceMappingURL=app.js.map
